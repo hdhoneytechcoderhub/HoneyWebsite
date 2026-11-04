@@ -1,0 +1,4 @@
+import { Form } from "@/components/forms";
+import { PageHero } from "@/components/ui";
+export const metadata = { title: "Book a Strategy Call", description: "Request a free Honey Media House strategy call. Your preferred time is not confirmed until our team responds." };
+export default function StrategyCallPage() { return <><PageHero eyebrow="Plan your next step" title="Request a free strategy call." description="Tell us what you’re working toward and choose a preferred time. Our team will review your request and follow up to confirm availability." /><section className="section cream"><div className="container"><div className="form-wrap"><p className="eyebrow">Strategy call request</p><h2 className="section-title">Let’s talk about growth.</h2><Form kind="strategy" /></div></div></section></>; }

@@ -1,0 +1,48 @@
+{
+  "name": "honey-media-house",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "tsx prisma/seed.ts",
+    "admin:create": "tsx scripts/create-admin.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.16.2",
+    "@vercel/blob": "^1.1.1",
+    "@prisma/adapter-pg": "^6.16.2",
+    "pg": "^8.16.3",
+    "bcryptjs": "^3.0.2",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.468.0",
+    "next": "^15.5.4",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "sanitize-html": "^2.17.0",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.14",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.18.8",
+    "@types/pg": "^8.15.5",
+    "@types/react": "^19.1.16",
+    "@types/react-dom": "^19.1.9",
+    "@types/sanitize-html": "^2.16.0",
+    "eslint": "^9.37.0",
+    "eslint-config-next": "^15.5.4",
+    "prisma": "^6.16.2",
+    "tailwindcss": "^4.1.14",
+    "tsx": "^4.19.4",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}

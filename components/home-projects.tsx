@@ -1,0 +1,6 @@
+"use client";
+import { useMemo,useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+type Project={id:string;slug:string;title:string;description:string;image:string;categories:{name:string}[];demoContent:boolean};
+export function HomeProjects({projects}:{projects:Project[]}){const [active,setActive]=useState("All");const categories=useMemo(()=>["All",...Array.from(new Set(projects.flatMap(p=>p.categories.map(c=>c.name))))],[projects]);const shown=active==="All"?projects:projects.filter(p=>p.categories.some(c=>c.name===active));return <><div className="filter-row" role="group" aria-label="Filter projects by category">{categories.map(name=><button key={name} type="button" className="filter-button" aria-pressed={active===name} onClick={()=>setActive(name)}>{name}</button>)}</div><div className="project-grid section-gap">{shown.map(project=><Link className="project-card" href={`/work/${project.slug}`} key={project.id}><Image src={project.image} alt="" width={900} height={620} sizes="(max-width:740px) 50vw,25vw"/><div className="card-copy"><h3>{project.title}</h3><p>{project.description}</p><div className="category-tags">{project.categories.map(cat=><span key={cat.name}>{cat.name}</span>)}</div>{project.demoContent&&<p className="demo-note">Demo portfolio concept · client relationship unverified</p>}</div></Link>)}</div></>}

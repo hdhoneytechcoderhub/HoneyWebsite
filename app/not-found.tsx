@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function NotFound() { return <main className="admin-login"><section className="admin-login-card"><p className="eyebrow">Honey Media House</p><h1>We couldn’t find that page.</h1><p>The page may have moved, or the link may be out of date.</p><div className="hero-actions"><Link className="button" href="/">Back to home</Link><Link className="button button-outline" href="/contact">Contact us</Link></div></section></main>; }
