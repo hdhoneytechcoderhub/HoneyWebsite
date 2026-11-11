@@ -7,3 +7,14 @@ coverage
 !.env.example
 *.log
 .DS_Store
+
+# Generated build artifacts
+*.tsbuildinfo
+
+# Local preview/runtime state
+.freebuff/*.pid
+.freebuff/*.log*
+/.freebuff/run.md
+
+# Review screenshots kept locally; site imagery lives in public/images
+/*.png

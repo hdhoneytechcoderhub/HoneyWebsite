@@ -1,3 +1,15 @@
-import { EnquirySection, PageHero } from "@/components/ui";
-export const metadata = { title: "Contact", description: "Start a project conversation with Honey Media House." };
-export default function ContactPage() { return <><PageHero eyebrow="Contact Honey Media House" title="Tell us what you’re building." description="Share a little about your goals and our team will follow up with a practical next step." /><EnquirySection title="Start your project" source="contact" /></>; }
+import type { Metadata } from "next";
+import { ContactPage } from "@/components/contact-page";
+
+export const metadata: Metadata = {
+  title: "Contact Us",
+  description: "Tell Honey Media House about your social media marketing or creative project. Send a secure enquiry and our team will be in touch.",
+  alternates: { canonical: "/contact" },
+};
+
+type Props = { searchParams: Promise<{ service?: string }> };
+
+export default async function ContactRoute({ searchParams }: Props) {
+  const { service = "" } = await searchParams;
+  return <ContactPage initialService={service} />;
+}

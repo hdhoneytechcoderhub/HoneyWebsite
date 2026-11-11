@@ -61,22 +61,6 @@ Next.js 15 (App Router) marketing site with an admin area, backed by PostgreSQL 
 | `BLOB_READ_WRITE_TOKEN` | No | Vercel Blob storage for uploads. |
 | `EMAIL_FROM` / `EMAIL_PROVIDER_API_KEY` | No | Reserved for notification email delivery. |
 
-## Runtime database fallback
-
-The public marketing pages use local illustrative content if Prisma cannot initialize its PostgreSQL connection (for example, invalid credentials or an offline server). A single generic warning is logged server-side; query/programming errors still surface, and admin/data writes are never reported as successful or silently redirected into demo storage. Correct `DATABASE_URL` and run the existing Prisma migration/seed steps to restore CMS data. The current admin CMS and form writes still require a healthy database.
-
-## Spring Boot + PostgreSQL backend roadmap
-
-The optional Java API lives separately at [`backend/`](backend/README.md); it does not replace Prisma or become the owner of the existing schema by default. Follow the roadmap before routing production traffic:
-
-1. **Bring up the isolated backend first:** choose the Java/Spring versions supported by the target host, provide a separate `SPRING_DATASOURCE_*` connection, and run the backend health/integration checks against a disposable PostgreSQL database.
-2. **Inventory and back up:** compare the Prisma schema/migrations and actual database objects/data; keep Prisma as the only schema and write owner for current application tables during initial development.
-3. **Define ownership boundaries:** if Spring needs persistence before a domain is migrated, isolate its new tables/schema and restrict its database role to that area. Do not let Prisma and Flyway migrate or write the same tables concurrently.
-4. **Move one domain at a time:** publish versioned Flyway migrations, validate JPA with `ddl-auto=validate`, and transfer a domain only after a reviewed baseline, backfill/reconciliation plan, compatibility window, and tested rollback are ready.
-5. **Connect Next.js deliberately:** add a server-side API client only after the Spring endpoint contract and auth are ready; test signed-out/admin access, errors, and data parity before switching reads, then switch writes and retire Prisma access only after stable cutover.
-
-The backend starter at [`backend/`](backend/README.md) implements only a PostgreSQL `SELECT 1` health route; it has no existing-site models, migrations, or production table writes. Java/JDK availability and valid external PostgreSQL credentials must be verified on the target machine before it can be run against a live database.
-
 ## Useful scripts
 
 | Script | Description |

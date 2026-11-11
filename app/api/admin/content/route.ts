@@ -2,11 +2,11 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getAdmin } from "@/lib/security";
 import { booleanFields, isResource, jsonFields, numberFields, resources } from "@/lib/admin-content";
+import { isSameOriginRequest } from "@/lib/validation";
 
 export const runtime = "nodejs";
 type Delegate = { findMany(args: Record<string, unknown>): Promise<unknown[]>; findUnique(args: Record<string, unknown>): Promise<unknown>; create(args: Record<string, unknown>): Promise<unknown>; update(args: Record<string, unknown>): Promise<unknown>; delete(args: Record<string, unknown>): Promise<unknown> };
 function delegate(resource: keyof typeof resources): Delegate { return (db as unknown as Record<string, Delegate>)[resources[resource].model]; }
-function sameOrigin(request: Request) { const origin = request.headers.get("origin"); return !origin || new URL(origin).host === new URL(request.url).host; }
 function parseValue(field: string, value: unknown): unknown {
   if (booleanFields.has(field)) return value === true || value === "true" || value === "on";
   if (numberFields.has(field)) { const parsed = Number(value); return Number.isInteger(parsed) ? parsed : 0; }
@@ -29,7 +29,7 @@ export async function GET(request: Request) {
 }
 export async function POST(request: Request) {
   if (!await getAdmin()) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  if (!sameOrigin(request)) return NextResponse.json({ message: "Cross-origin request blocked." }, { status: 403 });
+  if (!isSameOriginRequest(request)) return NextResponse.json({ message: "Cross-origin request blocked." }, { status: 403 });
   const input = await request.json().catch(() => null); if (!input || typeof input.resource !== "string" || !isResource(input.resource) || !input.data || typeof input.data !== "object") return NextResponse.json({ message: "Invalid content request." }, { status: 400 });
   const name = input.resource as keyof typeof resources; const data: Record<string, unknown> = {};
   try { for (const field of resources[name].fields) if (field in input.data) data[field] = parseValue(field, input.data[field]); if (name === "articles" && typeof data.publishedAt === "string") data.publishedAt = new Date(data.publishedAt); const row = await delegate(name).create({ data }); return NextResponse.json({ ok: true, row }, { status: 201 }); }
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 }
 export async function PATCH(request: Request) {
   if (!await getAdmin()) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  if (!sameOrigin(request)) return NextResponse.json({ message: "Cross-origin request blocked." }, { status: 403 });
+  if (!isSameOriginRequest(request)) return NextResponse.json({ message: "Cross-origin request blocked." }, { status: 403 });
   const input = await request.json().catch(() => null); if (!input || typeof input.resource !== "string" || !isResource(input.resource) || typeof input.id !== "string" || !input.data || typeof input.data !== "object") return NextResponse.json({ message: "Invalid content request." }, { status: 400 });
   const name = input.resource as keyof typeof resources; const data: Record<string, unknown> = {};
   try { for (const field of resources[name].fields) if (field in input.data) data[field] = parseValue(field, input.data[field]); const row = await delegate(name).update({ where: { id: input.id }, data }); return NextResponse.json({ ok: true, row }); }
@@ -45,7 +45,7 @@ export async function PATCH(request: Request) {
 }
 export async function DELETE(request: Request) {
   if (!await getAdmin()) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  if (!sameOrigin(request)) return NextResponse.json({ message: "Cross-origin request blocked." }, { status: 403 });
+  if (!isSameOriginRequest(request)) return NextResponse.json({ message: "Cross-origin request blocked." }, { status: 403 });
   const input = await request.json().catch(() => null); if (!input || typeof input.resource !== "string" || !isResource(input.resource) || typeof input.id !== "string") return NextResponse.json({ message: "Invalid content request." }, { status: 400 });
   try { await delegate(input.resource).delete({ where: { id: input.id } }); return NextResponse.json({ ok: true }); }
   catch { return NextResponse.json({ message: "Unable to delete this record. It may be linked to other content." }, { status: 409 }); }

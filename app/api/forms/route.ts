@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
+import { isSameOriginRequest } from "@/lib/validation";
 import { saveEnquiry, saveStrategyRequest } from "@/lib/forms";
 export const runtime = "nodejs";
 export async function POST(request: Request) {
+  if (!isSameOriginRequest(request)) return NextResponse.json({ ok: false, message: "Cross-origin requests are not allowed." }, { status: 403 });
   try {
     const body: unknown = await request.json();
     if (!body || typeof body !== "object" || !("kind" in body)) return NextResponse.json({ ok:false,message:"Invalid request." },{status:400});

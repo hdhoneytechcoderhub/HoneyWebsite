@@ -1,37 +1,25 @@
-let databaseUnavailableWarningLogged = false;
+let hasWarned = false;
+const databaseConnectionCodes = new Set(["P1000", "P1001", "P1002", "P1003", "P1017"]);
 
-/** Return true only for failures that prevent Prisma from establishing a database connection. */
 export function isDatabaseUnavailable(error: unknown): boolean {
-  if (!error || typeof error !== "object") return false;
-
-  const candidate = error as { name?: unknown; code?: unknown; errorCode?: unknown };
-  if (candidate.name === "PrismaClientInitializationError") return true;
-
-  return [candidate.code, candidate.errorCode].some((code) =>
-    typeof code === "string" && ["P1000", "P1001", "P1002", "P1003", "P1017"].includes(code),
+  if (typeof error !== "object" || error === null) return false;
+  const prismaError = error as { name?: unknown; code?: unknown; errorCode?: unknown };
+  if (prismaError.name === "PrismaClientInitializationError") return true;
+  return [prismaError.code, prismaError.errorCode].some(
+    code => typeof code === "string" && databaseConnectionCodes.has(code),
   );
 }
 
-/**
- * Keep public pages available when the CMS database is offline or has invalid credentials.
- * Query/validation errors are rethrown, and callers must not use this helper for writes.
- */
-export async function withPublicDatabaseFallback<T>(
-  operation: () => Promise<T>,
-  fallback: T,
-): Promise<T> {
+/** Use only for public reads. Never wrap mutations: writes must fail explicitly if persistence is down. */
+export async function withPublicDatabaseFallback<T>(operation: () => Promise<T>, fallback: T): Promise<T> {
   try {
     return await operation();
   } catch (error) {
     if (!isDatabaseUnavailable(error)) throw error;
-
-    if (!databaseUnavailableWarningLogged) {
-      console.warn(
-        "Public CMS database unavailable; rendering with local fallback content. Check the server-side database configuration.",
-      );
-      databaseUnavailableWarningLogged = true;
+    if (!hasWarned) {
+      console.warn("Public CMS database unavailable; serving local fallback content. Check server-side database configuration.");
+      hasWarned = true;
     }
-
     return fallback;
   }
 }
