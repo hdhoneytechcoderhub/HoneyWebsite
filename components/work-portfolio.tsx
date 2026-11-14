@@ -11,8 +11,7 @@ import {
   type WorkItem,
 } from "@/lib/work-content";
 
-const cardSizes =
-  "(max-width: 520px) calc(100vw - 40px), (max-width: 820px) 46vw, (max-width: 1100px) 31vw, 18vw";
+const cardSizes = "(max-width: 560px) calc(100vw - 36px), (max-width: 900px) 45vw, 19vw";
 
 function Poster({ item }: { item: WorkItem }) {
   const poster = item.poster;
@@ -20,15 +19,7 @@ function Poster({ item }: { item: WorkItem }) {
   return (
     <span className={`work-poster work-poster-${poster.tone} work-poster-${poster.align ?? "left"}`}>
       {poster.kicker && <span className="work-poster-kicker">{poster.kicker}</span>}
-      {poster.logo && (
-        <Image
-          className="work-poster-logo"
-          src="/images/honey-media-house-mark.png"
-          alt=""
-          width={90}
-          height={99}
-        />
-      )}
+      {poster.logo && <Image className="work-poster-logo" src="/images/honey-media-house-mark.svg" alt="Honey Media House mark" width={60} height={75} />}
       <span className="work-poster-lines">
         {poster.lines.map((line) => (
           <span key={line}>{line}</span>
@@ -45,8 +36,7 @@ export function WorkPortfolio() {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
 
-  const shown =
-    active === "All" ? workItems : workItems.filter((item) => item.category === active);
+  const shown = active === "All" ? workItems : workItems.filter((item) => item.category === active);
 
   const open = (item: WorkItem, trigger: HTMLElement) => {
     triggerRef.current = trigger;
@@ -106,23 +96,20 @@ export function WorkPortfolio() {
   };
 
   return (
-    <section className="section cream work-samples" id="sample-work">
-      <div className="container">
-        <div className="work-samples-head">
-          <div className="work-samples-intro">
-            <p className="eyebrow">Sample Work</p>
-            <h2 className="section-title">Creative Concepts &amp; Sample Designs</h2>
-            <p className="work-samples-lead">
-              As a startup, we focus on giving you a clear idea of our creative style and
-              capabilities. Here are some sample concepts we can create for your brand.
-            </p>
+    <section className="wk-section wk-samples" id="sample-work" aria-labelledby="wk-samples-title">
+      <div className="wk-shell">
+        <div className="wk-samples-head">
+          <div>
+            <p className="wk-kicker">Sample Work</p>
+            <h2 id="wk-samples-title">Creative Concepts<br />&amp; Sample Designs</h2>
+            <p className="wk-samples-lead">As a startup, we focus on giving you a clear idea of our creative style and capabilities. Here are some sample concepts we can create for your brand.</p>
           </div>
-          <div className="work-filters" role="group" aria-label="Filter sample work by category">
+          <div className="wk-filters" role="group" aria-label="Filter sample work by category">
             {workCategories.map((name) => (
               <button
                 key={name}
                 type="button"
-                className="work-filter"
+                className="wk-filter"
                 aria-pressed={active === name}
                 onClick={() => setActive(name)}
               >
@@ -132,50 +119,38 @@ export function WorkPortfolio() {
           </div>
         </div>
 
-        <p className="work-count" role="status" aria-live="polite">
+        <p className="wk-count" role="status" aria-live="polite">
           Showing {shown.length} of {workItems.length} sample concepts
           {active !== "All" ? ` in ${active}` : ""}
         </p>
 
         {shown.length > 0 ? (
-          <ul className="work-grid">
+          <ul className="wk-grid">
             {shown.map((item) => (
               <li key={item.id}>
                 <button
                   type="button"
-                  className="work-card"
+                  className="wk-card"
                   aria-haspopup="dialog"
                   onClick={(event) => open(item, event.currentTarget)}
                 >
-                  <span className="work-card-media">
+                  <span className="wk-card-media">
                     <Image src={item.image} alt={item.imageAlt} fill sizes={cardSizes} />
                     <Poster item={item} />
-                    <span className="work-card-flag">Concept sample</span>
                   </span>
-                  <span className="work-card-copy">
-                    <span className="work-card-title">{item.title}</span>
-                    <span className="work-card-sub">{item.subtitle}</span>
-                    <span className="work-card-cat">{item.category}</span>
-                    <span className="demo-note">Illustrative concept · not a verified client project</span>
-                  </span>
+                  <span className="wk-card-title">{item.title}</span>
+                  <span className="wk-card-sub">{item.subtitle}</span>
                 </button>
               </li>
             ))}
           </ul>
         ) : (
-          <div className="work-empty">
-            <p className="work-empty-title">No concepts in this category yet.</p>
-            <p className="work-empty-text">
-              We are still filling this shelf. Browse everything we have created so far, or tell us
-              what you need and we will design it for you.
-            </p>
-            <div className="hero-actions">
-              <button type="button" className="button" onClick={() => setActive("All")}>
-                Show all concepts
-              </button>
-              <Link className="button button-outline" href="/contact">
-                Request a Sample <ArrowRight size={15} />
-              </Link>
+          <div className="wk-empty">
+            <p className="wk-empty-title">No concepts in this category yet.</p>
+            <p className="wk-empty-text">We are still filling this shelf. Browse everything we have created so far, or tell us what you need and we will design it for you.</p>
+            <div className="wk-actions">
+              <button type="button" className="wk-btn" onClick={() => setActive("All")}>Show all concepts</button>
+              <Link className="wk-btn wk-btn-ghost" href="/contact">Request a Sample <ArrowRight size={15} /></Link>
             </div>
           </div>
         )}
@@ -203,29 +178,19 @@ export function WorkPortfolio() {
               <X size={18} />
             </button>
             <div className="work-dialog-media">
-              <Image
-                src={selected.image}
-                alt={selected.imageAlt}
-                fill
-                sizes="(max-width: 760px) calc(100vw - 40px), 700px"
-              />
+              <Image src={selected.image} alt={selected.imageAlt} fill sizes="(max-width: 760px) calc(100vw - 40px), 430px" />
               <Poster item={selected} />
             </div>
             <div className="work-dialog-body">
-              <p className="eyebrow">{selected.category}</p>
-              <h2 id="work-dialog-title">
-                {selected.title} <span>{selected.subtitle}</span>
-              </h2>
-              <p className="demo-note">
-                Concept/sample work — illustrative design preview, not a verified client project or
-                a reported business result.
-              </p>
+              <p className="wk-kicker">{selected.category}</p>
+              <h2 id="work-dialog-title">{selected.title} <span>{selected.subtitle}</span></h2>
+              <p className="work-dialog-note">Concept/sample work — illustrative design preview, not a verified client project or a reported business result.</p>
               <h3>Overview</h3>
               <p className="work-dialog-text">{selected.overview}</p>
               <h3>Deliverables</h3>
-              <ul className="list-check">
-                {selected.deliverables.map((item) => (
-                  <li key={item}>{item}</li>
+              <ul className="work-dialog-list">
+                {selected.deliverables.map((entry) => (
+                  <li key={entry}>{entry}</li>
                 ))}
               </ul>
               {selected.gallery && selected.gallery.length > 0 && (
@@ -239,20 +204,17 @@ export function WorkPortfolio() {
                         alt={`${selected.title} ${selected.subtitle} concept preview ${index + 1}`}
                         width={340}
                         height={240}
-                        sizes="(max-width: 760px) 90vw, 340px"
+                        sizes="(max-width: 760px) 40vw, 200px"
                       />
                     ))}
                   </div>
                 </>
               )}
-              <div className="hero-actions">
-                <Link
-                  className="button"
-                  href={`/contact?project=${encodeURIComponent(`${selected.title} ${selected.subtitle}`)}`}
-                >
+              <div className="wk-actions">
+                <Link className="wk-btn" href={`/contact?project=${encodeURIComponent(`${selected.title} ${selected.subtitle}`)}`}>
                   Discuss a Similar Project <ArrowRight size={15} />
                 </Link>
-                <Link className="button button-outline" href={`/work/${selected.slug}`}>
+                <Link className="wk-btn wk-btn-ghost" href={`/work/${selected.slug}`}>
                   View Full Details
                 </Link>
               </div>

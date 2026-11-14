@@ -83,16 +83,21 @@ export async function getPublicSitemapData() {
   ]), demoSitemapFallback);
 }
 export async function queryArticles(search = "", category = "", page = 1, pageSize = 9) {
+  type ArticleQueryResult = {
+    items: Array<Prisma.ArticleGetPayload<{ include: { category: true } }> | typeof demoArticles[number]>;
+    total: number;
+    pages: number;
+    page: number;
+    categories: Array<Prisma.ArticleCategoryGetPayload<object> | typeof demoCategories[number]>;
+  };
   const where = { ...publicWhere, ...(category ? { category: { slug: category } } : {}), ...(search ? { OR: [{ title: { contains: search, mode: "insensitive" as const } }, { excerpt: { contains: search, mode: "insensitive" as const } }] } : {}) };
-  try {
+  return withPublicDatabaseFallback<ArticleQueryResult>(async () => {
     const [items, total, categories] = await Promise.all([
       db.article.findMany({ where, include: { category: true }, orderBy: { publishedAt: "desc" }, skip: (page - 1) * pageSize, take: pageSize }),
       db.article.count({ where }), db.articleCategory.findMany({ orderBy: { name: "asc" } }),
     ]);
     return { items, total, pages: Math.ceil(total / pageSize), page, categories };
-  } catch (error) {
-    return withPublicDatabaseFallback(() => Promise.reject(error), articlesFallback(search, category, page, pageSize));
-  }
+  }, articlesFallback(search, category, page, pageSize));
 }
 export const getLegalPage = getPublishedLegalPage;
 export { demoAboutContent };

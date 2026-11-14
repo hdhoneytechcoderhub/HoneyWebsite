@@ -109,9 +109,8 @@ export function ContactPage({ initialService = "" }: { initialService?: string }
         <div className="contact-hero-copy">
           <p className="eyebrow">Contact Us</p>
           <h1 id="contact-title">Let’s Create<br />Something Great<br /><span>Together</span></h1>
-          <p>Have a project in mind, a question, or just want to say hello? We’d love to hear from you. Let’s discuss how Honey Media House can help your brand show up with intention.</p>
+          <p>Have a project in mind, a question, or just want to say hello? We’d love to hear from you. Let’s discuss how Honey Media House can help you grow.</p>
           <div className="contact-highlights">{highlights.map(({ title, icon: Icon }) => <div className="contact-highlight" key={title}><Icon aria-hidden="true"/><span>{title}</span></div>)}</div>
-          <Link className="button contact-talk-link" href="#contact-form">Let’s Talk <ArrowRight size={16}/></Link>
         </div>
       </div>
     </section>
@@ -121,7 +120,7 @@ export function ContactPage({ initialService = "" }: { initialService?: string }
         <div className="contact-form-card">
           <p className="eyebrow">Send Us a Message</p>
           <h2>Get In Touch</h2>
-          <p className="contact-card-intro">Tell us about your project using the form below.</p>
+          <p className="contact-card-intro">Fill out the form and our team will get back to you shortly.</p>
           <p className="contact-demo-note" role="note">Your message is sent securely to our team and is used only to respond to your enquiry.</p>
           {notice && <p className={`contact-form-status${Object.keys(errors).length || notice.startsWith("We couldn’t") ? " is-error" : ""}`} role={Object.keys(errors).length || notice.startsWith("We couldn’t") ? "alert" : "status"} aria-live="polite">{notice}</p>}
           {submitted ? <div className="contact-success"><Check aria-hidden="true"/><span>{notice}</span></div> : <form className="contact-form" onSubmit={submit} noValidate>

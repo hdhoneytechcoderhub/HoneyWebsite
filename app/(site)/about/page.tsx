@@ -31,6 +31,7 @@ export default async function AboutPage() {
     {about.demoContent && <div className="about-demo-note" role="note">Setup preview: founder details and story milestones are reference/demo content. Confirm or replace them in Admin → About Page before launch.</div>}
     <section className="about-hero">
       <div className="about-hero-image"><Image src={about.hero.image} alt={about.hero.imageAlt} fill priority sizes="(max-width:740px) 100vw,60vw" /></div>
+      <Image className="about-hero-mark" src="/images/honey-media-house-mark.svg" alt="" width={58} height={72} />
       <div className="about-hero-wash" />
       <div className="container about-hero-inner">
         <div className="about-hero-copy"><p className="eyebrow">Independent social media & creative studio</p><h1>{about.hero.title.replace(about.hero.highlight, "")}<span>{about.hero.highlight}</span></h1><p className="about-lead">{about.hero.description}</p><div className="hero-actions"><AboutStoryLink label={about.hero.primaryLabel}/><Link className="button button-outline" href="/contact">Let’s talk <ArrowRight size={15}/></Link></div>

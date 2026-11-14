@@ -12,6 +12,14 @@ export function isDatabaseUnavailable(error: unknown): boolean {
 
 /** Use only for public reads. Never wrap mutations: writes must fail explicitly if persistence is down. */
 export async function withPublicDatabaseFallback<T>(operation: () => Promise<T>, fallback: T): Promise<T> {
+  if (!process.env.DATABASE_URL?.trim()) {
+    if (!hasWarned) {
+      console.warn("DATABASE_URL is not configured; serving local fallback content.");
+      hasWarned = true;
+    }
+    return fallback;
+  }
+
   try {
     return await operation();
   } catch (error) {
