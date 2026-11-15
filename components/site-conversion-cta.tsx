@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ArrowRight, Lightbulb, Target, UsersRound } from "lucide-react";
 
 const benefits = [
@@ -9,6 +12,9 @@ const benefits = [
 ];
 
 export function SiteConversionCTA() {
+  const pathname = usePathname();
+  if (pathname === "/contact" || pathname === "/contact/") return null;
+
   return (
     <section className="site-conversion" aria-labelledby="site-conversion-title">
       <Image
