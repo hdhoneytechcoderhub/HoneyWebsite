@@ -15,7 +15,7 @@ import {
   TrendingUp,
   type LucideIcon,
 } from "lucide-react";
-import { demoIndustries, demoProcessSteps, demoServices, demoSettings } from "@/lib/demo-content";
+import { demoProcessSteps, demoServices, demoSettings } from "@/lib/demo-content";
 
 const icons: Record<string, LucideIcon> = {
   ChartNoAxesCombined,
@@ -45,7 +45,6 @@ const processIcons: LucideIcon[] = [Lightbulb, ChartNoAxesCombined, PanelsTopLef
 const photos = {
   hero: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1900&q=85",
   process: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1000&q=85",
-  cta: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1800&q=85",
 };
 
 export function ServicesPage() {
@@ -53,7 +52,6 @@ export function ServicesPage() {
   const stats = configuredStats.some((stat) => stat.value.trim())
     ? configuredStats.filter((stat) => stat.value.trim() && stat.label.trim()).slice(0, 4)
     : demoStats;
-  const whatsapp = demoSettings.whatsappNumber.replace(/[^+\d]/g, "");
 
   return <div className="services-page">
     <section className="services-hero" aria-labelledby="services-title">
@@ -118,25 +116,5 @@ export function ServicesPage() {
       </div>
     </section>
 
-    <section className="section services-industries" aria-labelledby="services-industries-title">
-      <div className="container">
-        <div className="services-industries-heading"><div><p className="eyebrow">Industries We Serve</p><h2 className="section-title" id="services-industries-title">Solutions for Every Industry</h2></div><div><p>We understand every industry is different. Our strategies are customized to your business needs.</p><Link className="button button-outline" href="/industries">View All Industries <ArrowRight size={15} /></Link></div></div>
-        <div className="services-industries-grid">
-          {demoIndustries.slice(0, 6).map((industry) => <Link className="services-industry-card" href={`/industries/${industry.slug}`} key={industry.id}>
-            <Image src={industry.image} alt={`Illustrative ${industry.title.toLowerCase()} industry image`} width={600} height={430} sizes="(max-width: 620px) 45vw, (max-width: 980px) 30vw, 16vw" />
-            <span>{industry.title}</span><span className="services-industry-arrow" aria-hidden="true"><ArrowRight size={15} /></span>
-          </Link>)}
-        </div>
-      </div>
-    </section>
-
-    <section className="services-cta-wrap">
-      <div className="container">
-        <div className="services-cta" style={{ backgroundImage: `url("${photos.cta}")` }}>
-          <div className="services-cta-copy"><h2>Let’s Build Something Great Together!</h2><p>Share your goals with us and get a free consultation.</p><div className="services-cta-actions"><Link className="button" href="/book-strategy-call">Book a Free Strategy Call <ArrowRight size={16} /></Link>{whatsapp && <a className="button button-light" href={`https://wa.me/${whatsapp.replace(/^\+/, "")}`} target="_blank" rel="noreferrer">Chat on WhatsApp</a>}</div></div>
-          <ul className="services-cta-points"><li><Lightbulb aria-hidden="true" /><span>Creative Ideas</span></li><li><Settings2 aria-hidden="true" /><span>Practical Strategies</span></li><li><TrendingUp aria-hidden="true" /><span>Real Growth</span></li></ul>
-        </div>
-      </div>
-    </section>
   </div>;
 }

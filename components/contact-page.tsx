@@ -1,11 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState, type FormEvent } from "react";
 import {
-  ArrowRight, ArrowUpRight, CalendarDays, Check, ChevronDown, Lightbulb,
-  Mail, MapPin, MessageCircle, MessageSquareText, Phone, Send, Settings2,
+  ArrowUpRight, CalendarDays, Check, ChevronDown, Lightbulb,
+  Mail, MapPin, MessageCircle, MessageSquareText, Phone, Send,
   TrendingUp, UserRound, UsersRound, Workflow,
 } from "lucide-react";
 import { contactFaqs, contactPhotos, demoServices, demoSettings } from "@/lib/demo-content";
@@ -21,11 +20,6 @@ const highlights = [
   { title: "Dedicated Support", icon: UsersRound },
   { title: "Custom Solutions", icon: Lightbulb },
   { title: "Growth Focused", icon: TrendingUp },
-];
-const ctaPoints = [
-  { title: "Creative Ideas", icon: Lightbulb },
-  { title: "Practical Strategy", icon: Settings2 },
-  { title: "Real Growth", icon: TrendingUp },
 ];
 
 export function ContactPage({ initialService = "" }: { initialService?: string }) {
@@ -175,12 +169,6 @@ export function ContactPage({ initialService = "" }: { initialService?: string }
       </div>
     </section>
 
-    <section className="contact-cta-section">
-      <div className="contact-bottom-cta" style={{ backgroundImage: `url("${contactPhotos.desk}")` }}>
-        <div className="contact-cta-copy"><p className="eyebrow">Still Have Questions?</p><h2>Let’s Talk About Your Ideas</h2><p>We’re here to help you turn your ideas into real growth.</p><div className="contact-cta-actions"><Link className="button" href="/book-strategy-call">Book a Call <ArrowRight size={16}/></Link>{whatsapp && <a className="button button-light" href={`https://wa.me/${whatsapp.replace(/^\+/, "")}`} target="_blank" rel="noreferrer">Chat on WhatsApp <MessageCircle size={16}/></a>}</div></div>
-        <div className="contact-cta-points">{ctaPoints.map(({ title, icon: Icon }) => <div key={title}><Icon aria-hidden="true"/><span>{title}</span></div>)}</div>
-      </div>
-    </section>
   </div>;
 }
 

@@ -196,13 +196,6 @@ export default function IndustriesPage() {
         </div>
       </section>
 
-      <section className="industries-cta">
-        <div className="industries-shell industries-cta-inner">
-          <div><p className="industries-kicker"><span /> Your market is yours</p><h2>Let’s make your<br /><em>next move matter.</em></h2></div>
-          <div className="industries-cta-copy"><p>Bring us the big picture, the messy middle or just a question. We’ll find a thoughtful place to begin.</p><Link className="industries-button industries-button-dark" href="/contact">Tell us what you’re building <ArrowRight size={16} /></Link></div>
-          <span className="industries-cta-mark" aria-hidden="true">H.</span>
-        </div>
-      </section>
     </div>
   );
 }

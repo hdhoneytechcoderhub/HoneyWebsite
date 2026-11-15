@@ -115,23 +115,6 @@ export default function Careers() {
       </div>
     </section>
 
-    <section className="cr-cta-section" aria-labelledby="cr-cta-title">
-      <div className="cr-shell">
-        <div className="cr-cta">
-          <div className="cr-cta-media">
-            <Image src={careerImages.recruitment} alt="Illustrative stock image of colleagues collaborating on a project" fill sizes="(max-width:980px) 100vw, 44vw" />
-            <Image className="cr-cta-mark" src="/images/honey-media-house-mark.svg" alt="" width={54} height={68} />
-          </div>
-          <div className="cr-cta-copy">
-            <p className="cr-kicker">Come Grow With Us</p>
-            <h2 id="cr-cta-title">Let’s Build Something Great Together!</h2>
-            <p>If you’re passionate, creative and ready to grow, we’d love to have you on our team.</p>
-            <Link className="cr-btn" href="#open-positions">Apply Now <ArrowRight size={15} /></Link>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section className="cr-process" aria-labelledby="cr-process-title">
       <div className="cr-shell cr-process-grid">
         <div className="cr-process-intro">

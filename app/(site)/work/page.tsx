@@ -2,14 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight, ChartNoAxesColumnIncreasing, ClipboardList, FileText, Instagram, Lightbulb,
-  Megaphone, MessageCircle, Monitor, MoreHorizontal, PenTool, Play, Rocket, Search, Settings2,
+  Megaphone, Monitor, MoreHorizontal, PenTool, Play, Rocket, Search, Settings2,
   Tag, Users,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { WorkPortfolio } from "@/components/work-portfolio";
-import { getSettings } from "@/lib/content";
 import {
-  approachSteps, createCapabilities, ctaHighlights, heroHighlights, whyChooseItems, workImages,
+  approachSteps, createCapabilities, heroHighlights, whyChooseItems, workImages,
   type WorkIconName,
 } from "@/lib/work-content";
 
@@ -38,10 +37,7 @@ const icons: Record<WorkIconName, LucideIcon> = {
   dots: MoreHorizontal,
 };
 
-export default async function Work() {
-  const settings = await getSettings();
-  const whatsapp = typeof settings.whatsappNumber === "string" ? settings.whatsappNumber.replace(/[^\d]/g, "") : "";
-
+export default function Work() {
   return <>
     <section className="wk-hero" aria-labelledby="wk-title">
       <div className="wk-hero-media">
@@ -132,29 +128,5 @@ export default async function Work() {
       </div>
     </section>
 
-    <section className="wk-cta-section" aria-labelledby="wk-cta-title">
-      <div className="wk-shell">
-        <div className="wk-cta">
-          <Image className="wk-cta-media" src={workImages.meeting} alt="" fill sizes="(max-width:980px) 100vw, 1180px" />
-          <div className="wk-cta-copy">
-            <p className="wk-kicker">Have a project in mind?</p>
-            <h2 id="wk-cta-title">Let’s Create Something Amazing Together!</h2>
-            <p>Share your goals with us and get a free consultation.</p>
-            <div className="wk-actions">
-              <Link className="wk-btn" href="/contact">Start Your Project <ArrowRight size={15} /></Link>
-              <Link className="wk-btn wk-btn-light" href={whatsapp ? `https://wa.me/${whatsapp}` : "/contact"} {...(whatsapp ? { target: "_blank", rel: "noreferrer" } : {})}>
-                <MessageCircle size={15} /> Chat on WhatsApp
-              </Link>
-            </div>
-          </div>
-          <ul className="wk-cta-points">
-            {ctaHighlights.map(item => {
-              const Icon = icons[item.icon];
-              return <li key={item.label}><Icon size={19} aria-hidden="true" /><span>{item.label}</span></li>;
-            })}
-          </ul>
-        </div>
-      </div>
-    </section>
   </>;
 }

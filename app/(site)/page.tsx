@@ -1,14 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowRight, ArrowUpRight, BarChart3, Code2, LayoutPanelLeft, LineChart, MessageCircle,
+  ArrowRight, ArrowUpRight, BarChart3, Code2, LayoutPanelLeft, LineChart,
   Palette, Play, Quote, Settings2, Share2, Target, TrendingUp, Users, UsersRound,
 } from "lucide-react";
 import { homepageData } from "@/lib/content";
 import { HomeProjects } from "@/components/home-projects";
 
 const heroImage = "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1600&q=85";
-const ctaImage = "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1600&q=85";
 const processImage = "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=900&q=85";
 
 const serviceIcons = {
@@ -39,12 +38,10 @@ export default async function Home() {
   const work = section("work");
   const process = section("process");
   const voices = section("testimonials");
-  const conversion = section("conversion");
   const resources = section("resources");
 
   const settings = data.settings as Record<string, unknown>;
   const text = (key: string, fallback = "") => (typeof settings[key] === "string" ? (settings[key] as string) : fallback);
-  const whatsapp = text("whatsappNumber").replace(/[^+\d]/g, "").replace(/^\+/, "");
   const storyVideo = text("heroVideoUrl");
 
   const cmsStats = Array.isArray(settings.heroStats)
@@ -211,23 +208,6 @@ export default async function Home() {
             </figcaption>
             {item.demoContent && <span className="hny-sample">Sample layout copy</span>}
           </figure>)}
-        </div>
-      </div>
-    </section>
-
-    <section className="hny-cta" aria-labelledby="hny-cta-title">
-      <Image className="hny-cta-image" src={ctaImage} alt="" fill sizes="100vw" />
-      <div className="hny-shell hny-cta-inner">
-        <div>
-          <p className="hny-kicker">{conversion?.eyebrow ?? "Let’s build something together"}</p>
-          <h2 id="hny-cta-title">{conversion?.title ?? "Ready to Grow Your Business?"}</h2>
-          <p>{conversion?.body ?? "Let’s create a custom digital marketing strategy for your goals."}</p>
-        </div>
-        <div className="hny-cta-actions">
-          <Link className="hny-btn" href="/book-strategy-call">Book a Free Strategy Call <ArrowRight size={15} /></Link>
-          <Link className="hny-btn hny-btn-light" href={whatsapp ? `https://wa.me/${whatsapp}` : "/contact"} {...(whatsapp ? { target: "_blank", rel: "noreferrer" } : {})}>
-            <MessageCircle size={15} /> Chat on WhatsApp
-          </Link>
         </div>
       </div>
     </section>
