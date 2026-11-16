@@ -151,7 +151,7 @@ export default async function Home() {
       </div>
     </section>
 
-    <section className="hny-section hny-section-cream hny-work" aria-labelledby="hny-work-title">
+    {false && <section className="hny-section hny-section-cream hny-work" aria-labelledby="hny-work-title">
       <div className="hny-shell">
         <div className="hny-head hny-head-inline">
           <div>
@@ -162,7 +162,7 @@ export default async function Home() {
         </div>
         <HomeProjects projects={data.projects} />
       </div>
-    </section>
+    </section>}
 
     <section className="hny-section" aria-labelledby="hny-process-title">
       <div className="hny-shell">
